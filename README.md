@@ -2,16 +2,22 @@
 
 ## Version 1.0.0
 已完成初期功能,能夠於 AutoCad 中完成圖塊計數功能，並且輸出至命令列表。
+命令名稱 : `BlockCounter`
 
 ## Version 2.0.0
 將圖塊計數結果輸出至 Excel 檔案中。
+命令名稱 : `BlockCounterBatch`
 
 ## Version 2.1
 可將某一資料夾內的所有 DWG 進行圖塊計數，將結果輸出至 Excel 檔案中。
+命令名稱 : `BlockCounterBatch`
 
 ## Version 2.2
 將輸出自Excel中的檔案名稱格式改成 : "樓層_編輯者名稱_版本"。
+命令名稱 : `BlockCounterBatch`
 
+## Version 2.3
+可利用勾選方式預覽輸出自Excel中的檔案名稱格式。
 
 ---
 ## 版本相容性

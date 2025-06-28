@@ -1,0 +1,26 @@
+﻿<Window x:Class="NameFormatDialog.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="檔案名稱格式設定" Height="220" Width="500">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="請輸入要在 Excel 中顯示的檔案名稱（可自訂）：" Margin="0,0,0,10" TextWrapping="Wrap"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="舊檔案名稱：" Width="120" VerticalAlignment="Center"/>
+            <TextBox x:Name="OldFileNameTextBox" Width="300"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Excel顯示名稱：" Width="120" VerticalAlignment="Center"/>
+            <TextBox x:Name="NewExcelNameTextBox" Width="300"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="確定" Width="60" Click="OkButton_Click" Height="40"/>
+            <Button Content="取消" Click="CancelButton_Click" Height="40" Width="60" Margin="10,0,0,0"/>
+        </StackPanel>
+    </Grid>
+</Window>
