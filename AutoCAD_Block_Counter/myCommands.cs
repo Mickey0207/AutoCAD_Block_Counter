@@ -51,18 +51,20 @@ namespace AutoCAD_Block_Counter
             // 取得第一個檔案名稱，傳給 NameFormatForm
             string firstFileName = Path.GetFileName(dwgFiles[0]);
             List<int> selectedIndexes = new();
+            string excelFileName = string.Empty;
             bool isConfirmed = false;
             using (var dialog = new NameFormatForm(firstFileName))
             {
                 if (dialog.ShowDialog() == DialogResult.OK && dialog.IsConfirmed)
                 {
                     selectedIndexes = dialog.SelectedIndexes;
+                    excelFileName = dialog.ExcelFileName;
                     isConfirmed = true;
                 }
             }
-            if (!isConfirmed || selectedIndexes.Count == 0)
+            if (!isConfirmed || selectedIndexes.Count == 0 || string.IsNullOrWhiteSpace(excelFileName))
             {
-                ed.WriteMessage("\n未選擇檔案名稱分段，操作取消。");
+                ed.WriteMessage("\n未選擇檔案名稱分段或未輸入Excel檔案名稱，操作取消。");
                 return;
             }
 
@@ -109,38 +111,38 @@ namespace AutoCAD_Block_Counter
             try
             {
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-                string fileName = $"BlockCountBatch_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                string fileName = excelFileName.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase) ? excelFileName : excelFileName + ".xlsx";
                 string filePath = Path.Combine(desktopPath, fileName);
                 using (var workbook = new XLWorkbook())
                 {
                     var ws = workbook.Worksheets.Add("BatchBlockCounts");
+                    // 轉置：A1=檔案名稱，A2~An=所有圖塊名稱，B1~N1=檔案名稱
+                    var blockList = allBlockNames.OrderBy(n => n).ToList();
+                    var fileList = fileBlockCounts.Keys.ToList();
                     // 標題列
                     ws.Cell(1, 1).Value = "檔案名稱";
-                    int col = 2;
-                    var blockList = allBlockNames.OrderBy(n => n).ToList();
-                    foreach (var blockName in blockList)
+                    for (int i = 0; i < fileList.Count; i++)
                     {
-                        ws.Cell(1, col).Value = blockName;
-                        col++;
-                    }
-                    // 資料列
-                    int row = 2;
-                    foreach (var kvp in fileBlockCounts)
-                    {
-                        // 根據勾選的分段組合 Excel 顯示名稱
-                        string shortName = ExtractShortName(kvp.Key);
+                        string shortName = ExtractShortName(fileList[i]);
                         var segments = shortName.Split('_');
                         var selected = selectedIndexes.Where(idx => idx < segments.Length).Select(idx => segments[idx]);
                         string displayName = string.Join("_", selected);
-                        ws.Cell(row, 1).Value = displayName;
-                        col = 2;
-                        foreach (var blockName in blockList)
+                        ws.Cell(1, i + 2).Value = displayName;
+                    }
+                    // 左側圖塊名稱
+                    for (int r = 0; r < blockList.Count; r++)
+                    {
+                        ws.Cell(r + 2, 1).Value = blockList[r];
+                    }
+                    // 數量填入
+                    for (int c = 0; c < fileList.Count; c++)
+                    {
+                        var blockCounts = fileBlockCounts[fileList[c]];
+                        for (int r = 0; r < blockList.Count; r++)
                         {
-                            kvp.Value.TryGetValue(blockName, out int count);
-                            ws.Cell(row, col).Value = count;
-                            col++;
+                            blockCounts.TryGetValue(blockList[r], out int count);
+                            ws.Cell(r + 2, c + 2).Value = count;
                         }
-                        row++;
                     }
                     workbook.SaveAs(filePath);
                 }

@@ -11,6 +11,7 @@ namespace AutoCAD_Block_Counter
         private List<CheckBox> _checkBoxes = new();
         public List<int> SelectedIndexes { get; private set; } = new();
         public bool IsConfirmed { get; private set; } = false;
+        public string ExcelFileName => txtExcelName.Text.Trim();
 
         public NameFormatForm(string firstFileName)
         {
@@ -54,9 +55,10 @@ namespace AutoCAD_Block_Counter
                 .Where(x => x.cb.Checked)
                 .Select(x => x.idx)
                 .ToList();
-            IsConfirmed = SelectedIndexes.Count > 0;
+            IsConfirmed = SelectedIndexes.Count > 0 && !string.IsNullOrWhiteSpace(ExcelFileName);
             DialogResult = IsConfirmed ? DialogResult.OK : DialogResult.None;
             if (IsConfirmed) Close();
+            else MessageBox.Show("請選擇至少一個分段並輸入Excel檔案名稱。", "提示");
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

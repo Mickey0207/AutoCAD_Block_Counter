@@ -10,6 +10,8 @@ namespace AutoCAD_Block_Counter
         private System.Windows.Forms.Label lblPreview;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label lblExcelName;
+        private System.Windows.Forms.TextBox txtExcelName;
 
         protected override void Dispose(bool disposing)
         {
@@ -29,6 +31,8 @@ namespace AutoCAD_Block_Counter
             this.flowSegments = new System.Windows.Forms.FlowLayoutPanel();
             this.lblPreview = new System.Windows.Forms.Label();
             this.txtPreview = new System.Windows.Forms.TextBox();
+            this.lblExcelName = new System.Windows.Forms.Label();
+            this.txtExcelName = new System.Windows.Forms.TextBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -75,9 +79,25 @@ namespace AutoCAD_Block_Counter
             this.txtPreview.Size = new System.Drawing.Size(200, 23);
             this.txtPreview.TabIndex = 4;
             // 
+            // lblExcelName
+            // 
+            this.lblExcelName.AutoSize = true;
+            this.lblExcelName.Location = new System.Drawing.Point(12, 165);
+            this.lblExcelName.Name = "lblExcelName";
+            this.lblExcelName.Size = new System.Drawing.Size(97, 15);
+            this.lblExcelName.TabIndex = 7;
+            this.lblExcelName.Text = "ExcelÀÉ®×¦WºÙ¡G";
+            // 
+            // txtExcelName
+            // 
+            this.txtExcelName.Location = new System.Drawing.Point(110, 162);
+            this.txtExcelName.Name = "txtExcelName";
+            this.txtExcelName.Size = new System.Drawing.Size(176, 23);
+            this.txtExcelName.TabIndex = 8;
+            // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(86, 170);
+            this.btnOK.Location = new System.Drawing.Point(86, 200);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 30);
             this.btnOK.TabIndex = 5;
@@ -87,7 +107,7 @@ namespace AutoCAD_Block_Counter
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(180, 170);
+            this.btnCancel.Location = new System.Drawing.Point(180, 200);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 30);
             this.btnCancel.TabIndex = 6;
@@ -99,7 +119,9 @@ namespace AutoCAD_Block_Counter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 221);
+            this.ClientSize = new System.Drawing.Size(384, 251);
+            this.Controls.Add(this.txtExcelName);
+            this.Controls.Add(this.lblExcelName);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.txtPreview);
