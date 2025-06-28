@@ -1,3 +1,4 @@
+using ClosedXML.Excel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,6 +6,12 @@ using System.Windows.Forms;
 
 namespace AutoCAD_Block_Counter
 {
+    public class BlockMapping
+    {
+        public string BlockName { get; set; } = string.Empty;
+        public string DisplayName { get; set; } = string.Empty;
+    }
+
     public partial class NameFormatForm : Form
     {
         private string[] _segments;
@@ -12,11 +19,13 @@ namespace AutoCAD_Block_Counter
         public List<int> SelectedIndexes { get; private set; } = new();
         public bool IsConfirmed { get; private set; } = false;
         public string ExcelFileName => txtExcelName.Text.Trim();
+        public List<BlockMapping> BlockMappings { get; private set; } = new();
 
         public NameFormatForm(string firstFileName)
         {
             InitializeComponent();
             ShowSegments(firstFileName);
+            InitBlockGrid();
         }
 
         private void ShowSegments(string fileName)
@@ -48,6 +57,66 @@ namespace AutoCAD_Block_Counter
             txtPreview.Text = string.Join("_", selected);
         }
 
+        private void InitBlockGrid()
+        {
+            dgvBlocks.Columns.Clear();
+            dgvBlocks.Rows.Clear();
+            dgvBlocks.AllowUserToAddRows = false;
+            dgvBlocks.AllowUserToDeleteRows = false;
+            dgvBlocks.RowHeadersVisible = false;
+            dgvBlocks.ColumnCount = 2;
+            dgvBlocks.Columns[0].HeaderText = "原始圖塊名稱";
+            dgvBlocks.Columns[1].HeaderText = "Excel顯示名稱";
+            dgvBlocks.Columns[0].Width = 140;
+            dgvBlocks.Columns[1].Width = 160;
+        }
+
+        private void btnAddBlock_Click(object sender, EventArgs e)
+        {
+            dgvBlocks.Rows.Add();
+        }
+
+        private void btnImportBlockMap_Click(object sender, EventArgs e)
+        {
+            using (var ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "Excel 檔案 (*.xlsx)|*.xlsx";
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        var imported = new List<BlockMapping>();
+                        using (var wb = new XLWorkbook(ofd.FileName))
+                        {
+                            var ws = wb.Worksheets.First();
+                            int row = 1;
+                            while (true)
+                            {
+                                var block = ws.Cell(row, 1).GetString();
+                                var display = ws.Cell(row, 2).GetString();
+                                if (string.IsNullOrWhiteSpace(block) && string.IsNullOrWhiteSpace(display))
+                                    break;
+                                if (!string.IsNullOrWhiteSpace(block) && !string.IsNullOrWhiteSpace(display))
+                                    imported.Add(new BlockMapping { BlockName = block, DisplayName = display });
+                                row++;
+                            }
+                        }
+                        // 先清空現有表格
+                        dgvBlocks.Rows.Clear();
+                        // 先加載有定義的
+                        foreach (var map in imported)
+                        {
+                            dgvBlocks.Rows.Add(map.BlockName, map.DisplayName);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"匯入失敗: {ex.Message}");
+                    }
+                }
+            }
+        }
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             SelectedIndexes = _checkBoxes
@@ -55,10 +124,25 @@ namespace AutoCAD_Block_Counter
                 .Where(x => x.cb.Checked)
                 .Select(x => x.idx)
                 .ToList();
+            BlockMappings = new List<BlockMapping>();
+            foreach (DataGridViewRow row in dgvBlocks.Rows)
+            {
+                if (row.IsNewRow) continue;
+                string block = row.Cells[0].Value?.ToString()?.Trim() ?? "";
+                string display = row.Cells[1].Value?.ToString()?.Trim() ?? "";
+                if (!string.IsNullOrWhiteSpace(block) && !string.IsNullOrWhiteSpace(display))
+                    BlockMappings.Add(new BlockMapping { BlockName = block, DisplayName = display });
+            }
             IsConfirmed = SelectedIndexes.Count > 0 && !string.IsNullOrWhiteSpace(ExcelFileName);
             DialogResult = IsConfirmed ? DialogResult.OK : DialogResult.None;
+            if (IsConfirmed && BlockMappings.Count == 0)
+            {
+                MessageBox.Show("請至少設定一個圖塊對應。", "提示");
+                IsConfirmed = false;
+                DialogResult = DialogResult.None;
+            }
             if (IsConfirmed) Close();
-            else MessageBox.Show("請選擇至少一個分段並輸入Excel檔案名稱。", "提示");
+            else if (!IsConfirmed) MessageBox.Show("請選擇至少一個分段並輸入Excel檔案名稱。", "提示");
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

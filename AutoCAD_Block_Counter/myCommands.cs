@@ -53,18 +53,20 @@ namespace AutoCAD_Block_Counter
             List<int> selectedIndexes = new();
             string excelFileName = string.Empty;
             bool isConfirmed = false;
+            List<BlockMapping> blockMappings = new();
             using (var dialog = new NameFormatForm(firstFileName))
             {
                 if (dialog.ShowDialog() == DialogResult.OK && dialog.IsConfirmed)
                 {
                     selectedIndexes = dialog.SelectedIndexes;
                     excelFileName = dialog.ExcelFileName;
+                    blockMappings = dialog.BlockMappings;
                     isConfirmed = true;
                 }
             }
-            if (!isConfirmed || selectedIndexes.Count == 0 || string.IsNullOrWhiteSpace(excelFileName))
+            if (!isConfirmed || selectedIndexes.Count == 0 || string.IsNullOrWhiteSpace(excelFileName) || blockMappings.Count == 0)
             {
-                ed.WriteMessage("\n未選擇檔案名稱分段或未輸入Excel檔案名稱，操作取消。");
+                ed.WriteMessage("\n未選擇檔案名稱分段或未輸入Excel檔案名稱或未設定圖塊，操作取消。");
                 return;
             }
 
@@ -116,23 +118,25 @@ namespace AutoCAD_Block_Counter
                 using (var workbook = new XLWorkbook())
                 {
                     var ws = workbook.Worksheets.Add("BatchBlockCounts");
-                    // 轉置：A1=檔案名稱，A2~An=所有圖塊名稱，B1~N1=檔案名稱
-                    var blockList = allBlockNames.OrderBy(n => n).ToList();
+                    var blockList = blockMappings.Select(b => b.BlockName).ToList();
+                    var blockDisplayList = blockMappings.Select(b => b.DisplayName).ToList();
                     var fileList = fileBlockCounts.Keys.ToList();
                     // 標題列
-                    ws.Cell(1, 1).Value = "檔案名稱";
+                    ws.Cell(1, 1).Value = "原始圖塊";
+                    ws.Cell(1, 2).Value = "新圖塊名稱";
                     for (int i = 0; i < fileList.Count; i++)
                     {
                         string shortName = ExtractShortName(fileList[i]);
                         var segments = shortName.Split('_');
                         var selected = selectedIndexes.Where(idx => idx < segments.Length).Select(idx => segments[idx]);
                         string displayName = string.Join("_", selected);
-                        ws.Cell(1, i + 2).Value = displayName;
+                        ws.Cell(1, i + 3).Value = displayName;
                     }
-                    // 左側圖塊名稱
+                    // 左側圖塊名稱（用 Excel 顯示名稱）
                     for (int r = 0; r < blockList.Count; r++)
                     {
                         ws.Cell(r + 2, 1).Value = blockList[r];
+                        ws.Cell(r + 2, 2).Value = blockDisplayList[r];
                     }
                     // 數量填入
                     for (int c = 0; c < fileList.Count; c++)
@@ -141,7 +145,7 @@ namespace AutoCAD_Block_Counter
                         for (int r = 0; r < blockList.Count; r++)
                         {
                             blockCounts.TryGetValue(blockList[r], out int count);
-                            ws.Cell(r + 2, c + 2).Value = count;
+                            ws.Cell(r + 2, c + 3).Value = count;
                         }
                     }
                     workbook.SaveAs(filePath);

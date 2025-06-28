@@ -12,6 +12,9 @@ namespace AutoCAD_Block_Counter
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label lblExcelName;
         private System.Windows.Forms.TextBox txtExcelName;
+        private System.Windows.Forms.DataGridView dgvBlocks;
+        private System.Windows.Forms.Button btnAddBlock;
+        private System.Windows.Forms.Button btnImportBlockMap;
 
         protected override void Dispose(bool disposing)
         {
@@ -33,8 +36,12 @@ namespace AutoCAD_Block_Counter
             this.txtPreview = new System.Windows.Forms.TextBox();
             this.lblExcelName = new System.Windows.Forms.Label();
             this.txtExcelName = new System.Windows.Forms.TextBox();
+            this.dgvBlocks = new System.Windows.Forms.DataGridView();
+            this.btnAddBlock = new System.Windows.Forms.Button();
+            this.btnImportBlockMap = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBlocks)).BeginInit();
             this.SuspendLayout();
             // 
             // lblHint
@@ -95,9 +102,38 @@ namespace AutoCAD_Block_Counter
             this.txtExcelName.Size = new System.Drawing.Size(176, 23);
             this.txtExcelName.TabIndex = 8;
             // 
+            // dgvBlocks
+            // 
+            this.dgvBlocks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvBlocks.Location = new System.Drawing.Point(12, 200);
+            this.dgvBlocks.Name = "dgvBlocks";
+            this.dgvBlocks.RowTemplate.Height = 25;
+            this.dgvBlocks.Size = new System.Drawing.Size(360, 120);
+            this.dgvBlocks.TabIndex = 9;
+            // 
+            // btnAddBlock
+            // 
+            this.btnAddBlock.Location = new System.Drawing.Point(12, 330);
+            this.btnAddBlock.Name = "btnAddBlock";
+            this.btnAddBlock.Size = new System.Drawing.Size(100, 30);
+            this.btnAddBlock.TabIndex = 10;
+            this.btnAddBlock.Text = "新增圖塊列";
+            this.btnAddBlock.UseVisualStyleBackColor = true;
+            this.btnAddBlock.Click += new System.EventHandler(this.btnAddBlock_Click);
+            // 
+            // btnImportBlockMap
+            // 
+            this.btnImportBlockMap.Location = new System.Drawing.Point(120, 330);
+            this.btnImportBlockMap.Name = "btnImportBlockMap";
+            this.btnImportBlockMap.Size = new System.Drawing.Size(100, 30);
+            this.btnImportBlockMap.TabIndex = 11;
+            this.btnImportBlockMap.Text = "匯入圖塊對應";
+            this.btnImportBlockMap.UseVisualStyleBackColor = true;
+            this.btnImportBlockMap.Click += new System.EventHandler(this.btnImportBlockMap_Click);
+            // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(86, 200);
+            this.btnOK.Location = new System.Drawing.Point(180, 330);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 30);
             this.btnOK.TabIndex = 5;
@@ -107,7 +143,7 @@ namespace AutoCAD_Block_Counter
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(180, 200);
+            this.btnCancel.Location = new System.Drawing.Point(270, 330);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 30);
             this.btnCancel.TabIndex = 6;
@@ -119,7 +155,10 @@ namespace AutoCAD_Block_Counter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 251);
+            this.ClientSize = new System.Drawing.Size(384, 371);
+            this.Controls.Add(this.btnImportBlockMap);
+            this.Controls.Add(this.btnAddBlock);
+            this.Controls.Add(this.dgvBlocks);
             this.Controls.Add(this.txtExcelName);
             this.Controls.Add(this.lblExcelName);
             this.Controls.Add(this.btnCancel);
@@ -135,6 +174,7 @@ namespace AutoCAD_Block_Counter
             this.Name = "NameFormatForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "檔案名稱格式設定";
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBlocks)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
