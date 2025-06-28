@@ -146,6 +146,22 @@ namespace AutoCAD_Block_Counter
             }
         }
 
+        // 擷取檔案名稱中的樓層_名稱_版本部分
+        private string ExtractShortName(string filename)
+        {
+            // 只取檔名不含副檔名
+            var name = Path.GetFileNameWithoutExtension(filename);
+            var parts = name.Split('_');
+            // 預期格式: 前綴_樓層_日期_名稱_版本
+            // 取第2、4、5段（index 1, 3, 4）
+            if (parts.Length >= 5)
+                return $"{parts[1]}_{parts[3]}_{parts[4]}";
+            else if (parts.Length >= 3)
+                return string.Join("_", parts.Skip(1));
+            else
+                return name;
+        }
+
         // 批次統計資料夾內所有DWG檔案的圖塊，並輸出Excel
         [CommandMethod("BLOCKCOUNTBATCH", CommandFlags.Modal)]
         public void BlockCountBatch()
@@ -234,7 +250,7 @@ namespace AutoCAD_Block_Counter
                     int row = 2;
                     foreach (var kvp in fileBlockCounts)
                     {
-                        ws.Cell(row, 1).Value = kvp.Key;
+                        ws.Cell(row, 1).Value = ExtractShortName(kvp.Key);
                         col = 2;
                         foreach (var blockName in blockList)
                         {
