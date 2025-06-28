@@ -15,6 +15,7 @@ namespace AutoCAD_Block_Counter
         private System.Windows.Forms.DataGridView dgvBlocks;
         private System.Windows.Forms.Button btnAddBlock;
         private System.Windows.Forms.Button btnImportBlockMap;
+        private System.Windows.Forms.CheckBox chkShowLayer;
 
         protected override void Dispose(bool disposing)
         {
@@ -41,6 +42,7 @@ namespace AutoCAD_Block_Counter
             this.btnImportBlockMap = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.chkShowLayer = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlocks)).BeginInit();
             this.SuspendLayout();
             // 
@@ -102,18 +104,28 @@ namespace AutoCAD_Block_Counter
             this.txtExcelName.Size = new System.Drawing.Size(176, 23);
             this.txtExcelName.TabIndex = 8;
             // 
+            // chkShowLayer
+            // 
+            this.chkShowLayer.AutoSize = true;
+            this.chkShowLayer.Location = new System.Drawing.Point(12, 180);
+            this.chkShowLayer.Name = "chkShowLayer";
+            this.chkShowLayer.Size = new System.Drawing.Size(180, 19);
+            this.chkShowLayer.TabIndex = 12;
+            this.chkShowLayer.Text = "在Excel中顯示圖塊圖層名稱";
+            this.chkShowLayer.UseVisualStyleBackColor = true;
+            // 
             // dgvBlocks
             // 
             this.dgvBlocks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvBlocks.Location = new System.Drawing.Point(12, 200);
+            this.dgvBlocks.Location = new System.Drawing.Point(12, 210);
             this.dgvBlocks.Name = "dgvBlocks";
             this.dgvBlocks.RowTemplate.Height = 25;
-            this.dgvBlocks.Size = new System.Drawing.Size(360, 120);
+            this.dgvBlocks.Size = new System.Drawing.Size(360, 200);
             this.dgvBlocks.TabIndex = 9;
             // 
             // btnAddBlock
             // 
-            this.btnAddBlock.Location = new System.Drawing.Point(12, 330);
+            this.btnAddBlock.Location = new System.Drawing.Point(12, 420);
             this.btnAddBlock.Name = "btnAddBlock";
             this.btnAddBlock.Size = new System.Drawing.Size(100, 30);
             this.btnAddBlock.TabIndex = 10;
@@ -123,7 +135,7 @@ namespace AutoCAD_Block_Counter
             // 
             // btnImportBlockMap
             // 
-            this.btnImportBlockMap.Location = new System.Drawing.Point(120, 330);
+            this.btnImportBlockMap.Location = new System.Drawing.Point(120, 420);
             this.btnImportBlockMap.Name = "btnImportBlockMap";
             this.btnImportBlockMap.Size = new System.Drawing.Size(100, 30);
             this.btnImportBlockMap.TabIndex = 11;
@@ -133,9 +145,9 @@ namespace AutoCAD_Block_Counter
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(180, 330);
+            this.btnOK.Location = new System.Drawing.Point(230, 420);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 30);
+            this.btnOK.Size = new System.Drawing.Size(65, 30);
             this.btnOK.TabIndex = 5;
             this.btnOK.Text = "確定";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -143,9 +155,9 @@ namespace AutoCAD_Block_Counter
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(270, 330);
+            this.btnCancel.Location = new System.Drawing.Point(307, 420);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 30);
+            this.btnCancel.Size = new System.Drawing.Size(65, 30);
             this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "取消";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -155,7 +167,8 @@ namespace AutoCAD_Block_Counter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 371);
+            this.ClientSize = new System.Drawing.Size(384, 470);
+            this.Controls.Add(this.chkShowLayer);
             this.Controls.Add(this.btnImportBlockMap);
             this.Controls.Add(this.btnAddBlock);
             this.Controls.Add(this.dgvBlocks);

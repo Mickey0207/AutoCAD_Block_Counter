@@ -20,6 +20,7 @@ namespace AutoCAD_Block_Counter
         public bool IsConfirmed { get; private set; } = false;
         public string ExcelFileName => txtExcelName.Text.Trim();
         public List<BlockMapping> BlockMappings { get; private set; } = new();
+        public bool ShowLayerInExcel => chkShowLayer.Checked;
 
         public NameFormatForm(string firstFileName)
         {
