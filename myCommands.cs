@@ -2,6 +2,8 @@
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
+using ClosedXML.Excel;
+using System.IO;
 using AcadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 
 [assembly: CommandClass(typeof(AutoCAD_Block_Counter.MyCommands))]
@@ -112,7 +114,36 @@ namespace AutoCAD_Block_Counter
                 {
                     ed.WriteMessage($"\n圖塊名稱: {kvp.Key}, 數量: {kvp.Value}");
                 }
+
+                // 匯出到Excel
+                try
+                {
+                    string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+                    string fileName = $"BlockCount_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                    string filePath = Path.Combine(desktopPath, fileName);
+
+                    using (var workbook = new XLWorkbook())
+                    {
+                        var ws = workbook.Worksheets.Add("BlockCounts");
+                        ws.Cell(1, 1).Value = "圖塊名稱";
+                        ws.Cell(1, 2).Value = "數量";
+                        int row = 2;
+                        foreach (var kvp in blockCounts)
+                        {
+                            ws.Cell(row, 1).Value = kvp.Key;
+                            ws.Cell(row, 2).Value = kvp.Value;
+                            row++;
+                        }
+                        workbook.SaveAs(filePath);
+                    }
+                    ed.WriteMessage($"\n已將圖塊計數結果匯出至: {filePath}");
+                }
+                catch (System.Exception ex)
+                {
+                    ed.WriteMessage($"\n匯出Excel時發生錯誤: {ex.Message}");
+                }
             }
         }
     }
 }
+    
