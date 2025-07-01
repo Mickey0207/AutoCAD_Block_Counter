@@ -62,7 +62,7 @@ namespace AutoCAD_Block_Counter
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(620, 60);
+            this.pnlHeader.Size = new System.Drawing.Size(820, 60);
             this.pnlHeader.TabIndex = 13;
             // 
             // lblHint
@@ -92,7 +92,7 @@ namespace AutoCAD_Block_Counter
             this.pnlMain.Location = new System.Drawing.Point(0, 60);
             this.pnlMain.Name = "pnlMain";
             this.pnlMain.Padding = new System.Windows.Forms.Padding(20);
-            this.pnlMain.Size = new System.Drawing.Size(620, 490);
+            this.pnlMain.Size = new System.Drawing.Size(820, 520);
             this.pnlMain.TabIndex = 14;
             // 
             // lblFileName
@@ -113,7 +113,7 @@ namespace AutoCAD_Block_Counter
             this.flowSegments.Location = new System.Drawing.Point(20, 50);
             this.flowSegments.Name = "flowSegments";
             this.flowSegments.Padding = new System.Windows.Forms.Padding(10);
-            this.flowSegments.Size = new System.Drawing.Size(560, 50);
+            this.flowSegments.Size = new System.Drawing.Size(760, 80);
             this.flowSegments.TabIndex = 2;
             // 
             // lblPreview
@@ -121,7 +121,7 @@ namespace AutoCAD_Block_Counter
             this.lblPreview.AutoSize = true;
             this.lblPreview.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblPreview.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(80)))), ((int)(((byte)(87)))));
-            this.lblPreview.Location = new System.Drawing.Point(20, 120);
+            this.lblPreview.Location = new System.Drawing.Point(20, 150);
             this.lblPreview.Name = "lblPreview";
             this.lblPreview.Size = new System.Drawing.Size(77, 17);
             this.lblPreview.TabIndex = 3;
@@ -132,10 +132,10 @@ namespace AutoCAD_Block_Counter
             this.txtPreview.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(236)))), ((int)(((byte)(239)))));
             this.txtPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPreview.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtPreview.Location = new System.Drawing.Point(110, 118);
+            this.txtPreview.Location = new System.Drawing.Point(110, 148);
             this.txtPreview.Name = "txtPreview";
             this.txtPreview.ReadOnly = true;
-            this.txtPreview.Size = new System.Drawing.Size(470, 25);
+            this.txtPreview.Size = new System.Drawing.Size(670, 25);
             this.txtPreview.TabIndex = 4;
             // 
             // lblExcelName
@@ -143,7 +143,7 @@ namespace AutoCAD_Block_Counter
             this.lblExcelName.AutoSize = true;
             this.lblExcelName.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lblExcelName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(80)))), ((int)(((byte)(87)))));
-            this.lblExcelName.Location = new System.Drawing.Point(20, 160);
+            this.lblExcelName.Location = new System.Drawing.Point(20, 190);
             this.lblExcelName.Name = "lblExcelName";
             this.lblExcelName.Size = new System.Drawing.Size(113, 17);
             this.lblExcelName.TabIndex = 7;
@@ -153,9 +153,9 @@ namespace AutoCAD_Block_Counter
             // 
             this.txtExcelName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtExcelName.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtExcelName.Location = new System.Drawing.Point(140, 158);
+            this.txtExcelName.Location = new System.Drawing.Point(140, 188);
             this.txtExcelName.Name = "txtExcelName";
-            this.txtExcelName.Size = new System.Drawing.Size(440, 25);
+            this.txtExcelName.Size = new System.Drawing.Size(640, 25);
             this.txtExcelName.TabIndex = 8;
             // 
             // lblLayerInfo
@@ -163,7 +163,7 @@ namespace AutoCAD_Block_Counter
             this.lblLayerInfo.AutoSize = true;
             this.lblLayerInfo.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
             this.lblLayerInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
-            this.lblLayerInfo.Location = new System.Drawing.Point(20, 200);
+            this.lblLayerInfo.Location = new System.Drawing.Point(20, 230);
             this.lblLayerInfo.Name = "lblLayerInfo";
             this.lblLayerInfo.Size = new System.Drawing.Size(410, 16);
             this.lblLayerInfo.TabIndex = 12;
@@ -175,10 +175,10 @@ namespace AutoCAD_Block_Counter
             this.dgvBlocks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.dgvBlocks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBlocks.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
-            this.dgvBlocks.Location = new System.Drawing.Point(20, 230);
+            this.dgvBlocks.Location = new System.Drawing.Point(20, 260);
             this.dgvBlocks.Name = "dgvBlocks";
             this.dgvBlocks.RowTemplate.Height = 25;
-            this.dgvBlocks.Size = new System.Drawing.Size(560, 240);
+            this.dgvBlocks.Size = new System.Drawing.Size(760, 240);
             this.dgvBlocks.TabIndex = 9;
             // 
             // pnlButtons
@@ -190,9 +190,9 @@ namespace AutoCAD_Block_Counter
             this.pnlButtons.Controls.Add(this.btnOK);
             this.pnlButtons.Controls.Add(this.btnCancel);
             this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlButtons.Location = new System.Drawing.Point(0, 550);
+            this.pnlButtons.Location = new System.Drawing.Point(0, 580);
             this.pnlButtons.Name = "pnlButtons";
-            this.pnlButtons.Size = new System.Drawing.Size(620, 70);
+            this.pnlButtons.Size = new System.Drawing.Size(820, 70);
             this.pnlButtons.TabIndex = 15;
             // 
             // btnAddBlock
@@ -232,7 +232,7 @@ namespace AutoCAD_Block_Counter
             this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOK.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnOK.ForeColor = System.Drawing.Color.White;
-            this.btnOK.Location = new System.Drawing.Point(380, 20);
+            this.btnOK.Location = new System.Drawing.Point(580, 20);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 5;
@@ -247,7 +247,7 @@ namespace AutoCAD_Block_Counter
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(500, 20);
+            this.btnCancel.Location = new System.Drawing.Point(700, 20);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 6;
@@ -260,7 +260,7 @@ namespace AutoCAD_Block_Counter
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.ClientSize = new System.Drawing.Size(620, 620);
+            this.ClientSize = new System.Drawing.Size(820, 650);
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.pnlButtons);
             this.Controls.Add(this.pnlHeader);

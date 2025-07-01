@@ -90,8 +90,8 @@ namespace AutoCAD_Block_Counter
             dgvBlocks.ColumnCount = 2;
             dgvBlocks.Columns[0].HeaderText = "原始圖塊名稱";
             dgvBlocks.Columns[1].HeaderText = "Excel顯示名稱";
-            dgvBlocks.Columns[0].Width = 200;
-            dgvBlocks.Columns[1].Width = 340;
+            dgvBlocks.Columns[0].Width = 300;  // 增加寬度
+            dgvBlocks.Columns[1].Width = 440;  // 增加寬度
         }
 
         private void btnAddBlock_Click(object sender, EventArgs e)
