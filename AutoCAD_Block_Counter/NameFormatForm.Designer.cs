@@ -15,7 +15,10 @@ namespace AutoCAD_Block_Counter
         private System.Windows.Forms.DataGridView dgvBlocks;
         private System.Windows.Forms.Button btnAddBlock;
         private System.Windows.Forms.Button btnImportBlockMap;
-        private System.Windows.Forms.CheckBox chkShowLayer;
+        private System.Windows.Forms.Panel pnlHeader;
+        private System.Windows.Forms.Panel pnlMain;
+        private System.Windows.Forms.Panel pnlButtons;
+        private System.Windows.Forms.Label lblLayerInfo;
 
         protected override void Dispose(bool disposing)
         {
@@ -42,145 +45,225 @@ namespace AutoCAD_Block_Counter
             this.btnImportBlockMap = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.chkShowLayer = new System.Windows.Forms.CheckBox();
+            this.pnlHeader = new System.Windows.Forms.Panel();
+            this.pnlMain = new System.Windows.Forms.Panel();
+            this.pnlButtons = new System.Windows.Forms.Panel();
+            this.lblLayerInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlocks)).BeginInit();
+            this.pnlHeader.SuspendLayout();
+            this.pnlMain.SuspendLayout();
+            this.pnlButtons.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // pnlHeader
+            // 
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.pnlHeader.Controls.Add(this.lblHint);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(620, 60);
+            this.pnlHeader.TabIndex = 13;
             // 
             // lblHint
             // 
+            this.lblHint.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblHint.AutoSize = true;
+            this.lblHint.Font = new System.Drawing.Font("Microsoft JhengHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblHint.ForeColor = System.Drawing.Color.White;
             this.lblHint.Location = new System.Drawing.Point(20, 20);
             this.lblHint.Name = "lblHint";
-            this.lblHint.Size = new System.Drawing.Size(320, 15);
+            this.lblHint.Size = new System.Drawing.Size(361, 20);
             this.lblHint.TabIndex = 0;
             this.lblHint.Text = "請選擇要組合的檔案名稱分段（以底線分隔）";
+            // 
+            // pnlMain
+            // 
+            this.pnlMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.pnlMain.Controls.Add(this.lblFileName);
+            this.pnlMain.Controls.Add(this.flowSegments);
+            this.pnlMain.Controls.Add(this.lblPreview);
+            this.pnlMain.Controls.Add(this.txtPreview);
+            this.pnlMain.Controls.Add(this.lblExcelName);
+            this.pnlMain.Controls.Add(this.txtExcelName);
+            this.pnlMain.Controls.Add(this.lblLayerInfo);
+            this.pnlMain.Controls.Add(this.dgvBlocks);
+            this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMain.Location = new System.Drawing.Point(0, 60);
+            this.pnlMain.Name = "pnlMain";
+            this.pnlMain.Padding = new System.Windows.Forms.Padding(20);
+            this.pnlMain.Size = new System.Drawing.Size(620, 490);
+            this.pnlMain.TabIndex = 14;
             // 
             // lblFileName
             // 
             this.lblFileName.AutoSize = true;
-            this.lblFileName.Location = new System.Drawing.Point(20, 50);
+            this.lblFileName.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblFileName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(80)))), ((int)(((byte)(87)))));
+            this.lblFileName.Location = new System.Drawing.Point(20, 20);
             this.lblFileName.Name = "lblFileName";
-            this.lblFileName.Size = new System.Drawing.Size(92, 15);
+            this.lblFileName.Size = new System.Drawing.Size(108, 17);
             this.lblFileName.TabIndex = 1;
             this.lblFileName.Text = "範例檔案名稱：";
             // 
             // flowSegments
             // 
-            this.flowSegments.Location = new System.Drawing.Point(20, 80);
+            this.flowSegments.BackColor = System.Drawing.Color.White;
+            this.flowSegments.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flowSegments.Location = new System.Drawing.Point(20, 50);
             this.flowSegments.Name = "flowSegments";
-            this.flowSegments.Size = new System.Drawing.Size(540, 40);
+            this.flowSegments.Padding = new System.Windows.Forms.Padding(10);
+            this.flowSegments.Size = new System.Drawing.Size(560, 50);
             this.flowSegments.TabIndex = 2;
             // 
             // lblPreview
             // 
             this.lblPreview.AutoSize = true;
-            this.lblPreview.Location = new System.Drawing.Point(20, 130);
+            this.lblPreview.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblPreview.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(80)))), ((int)(((byte)(87)))));
+            this.lblPreview.Location = new System.Drawing.Point(20, 120);
             this.lblPreview.Name = "lblPreview";
-            this.lblPreview.Size = new System.Drawing.Size(68, 15);
+            this.lblPreview.Size = new System.Drawing.Size(77, 17);
             this.lblPreview.TabIndex = 3;
             this.lblPreview.Text = "組合預覽：";
             // 
             // txtPreview
             // 
-            this.txtPreview.Location = new System.Drawing.Point(100, 127);
+            this.txtPreview.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(236)))), ((int)(((byte)(239)))));
+            this.txtPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPreview.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtPreview.Location = new System.Drawing.Point(110, 118);
             this.txtPreview.Name = "txtPreview";
             this.txtPreview.ReadOnly = true;
-            this.txtPreview.Size = new System.Drawing.Size(460, 23);
+            this.txtPreview.Size = new System.Drawing.Size(470, 25);
             this.txtPreview.TabIndex = 4;
             // 
             // lblExcelName
             // 
             this.lblExcelName.AutoSize = true;
-            this.lblExcelName.Location = new System.Drawing.Point(20, 170);
+            this.lblExcelName.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblExcelName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(80)))), ((int)(((byte)(87)))));
+            this.lblExcelName.Location = new System.Drawing.Point(20, 160);
             this.lblExcelName.Name = "lblExcelName";
-            this.lblExcelName.Size = new System.Drawing.Size(97, 15);
+            this.lblExcelName.Size = new System.Drawing.Size(113, 17);
             this.lblExcelName.TabIndex = 7;
             this.lblExcelName.Text = "Excel檔案名稱：";
             // 
             // txtExcelName
             // 
-            this.txtExcelName.Location = new System.Drawing.Point(120, 167);
+            this.txtExcelName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtExcelName.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtExcelName.Location = new System.Drawing.Point(140, 158);
             this.txtExcelName.Name = "txtExcelName";
-            this.txtExcelName.Size = new System.Drawing.Size(440, 23);
+            this.txtExcelName.Size = new System.Drawing.Size(440, 25);
             this.txtExcelName.TabIndex = 8;
             // 
-            // chkShowLayer
+            // lblLayerInfo
             // 
-            this.chkShowLayer.AutoSize = true;
-            this.chkShowLayer.Location = new System.Drawing.Point(20, 205);
-            this.chkShowLayer.Name = "chkShowLayer";
-            this.chkShowLayer.Size = new System.Drawing.Size(180, 19);
-            this.chkShowLayer.TabIndex = 12;
-            this.chkShowLayer.Text = "在Excel中顯示圖塊圖層名稱";
-            this.chkShowLayer.UseVisualStyleBackColor = true;
+            this.lblLayerInfo.AutoSize = true;
+            this.lblLayerInfo.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.lblLayerInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.lblLayerInfo.Location = new System.Drawing.Point(20, 200);
+            this.lblLayerInfo.Name = "lblLayerInfo";
+            this.lblLayerInfo.Size = new System.Drawing.Size(410, 16);
+            this.lblLayerInfo.TabIndex = 12;
+            this.lblLayerInfo.Text = "提示：同一圖塊在不同圖層會分別顯示和統計，圖層資訊會自動包含在輸出中";
             // 
             // dgvBlocks
             // 
+            this.dgvBlocks.BackgroundColor = System.Drawing.Color.White;
+            this.dgvBlocks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.dgvBlocks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvBlocks.Location = new System.Drawing.Point(20, 240);
+            this.dgvBlocks.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(226)))), ((int)(((byte)(230)))));
+            this.dgvBlocks.Location = new System.Drawing.Point(20, 230);
             this.dgvBlocks.Name = "dgvBlocks";
             this.dgvBlocks.RowTemplate.Height = 25;
-            this.dgvBlocks.Size = new System.Drawing.Size(540, 260);
+            this.dgvBlocks.Size = new System.Drawing.Size(560, 240);
             this.dgvBlocks.TabIndex = 9;
+            // 
+            // pnlButtons
+            // 
+            this.pnlButtons.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.pnlButtons.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlButtons.Controls.Add(this.btnAddBlock);
+            this.pnlButtons.Controls.Add(this.btnImportBlockMap);
+            this.pnlButtons.Controls.Add(this.btnOK);
+            this.pnlButtons.Controls.Add(this.btnCancel);
+            this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlButtons.Location = new System.Drawing.Point(0, 550);
+            this.pnlButtons.Name = "pnlButtons";
+            this.pnlButtons.Size = new System.Drawing.Size(620, 70);
+            this.pnlButtons.TabIndex = 15;
             // 
             // btnAddBlock
             // 
-            this.btnAddBlock.Location = new System.Drawing.Point(20, 520);
+            this.btnAddBlock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnAddBlock.FlatAppearance.BorderSize = 0;
+            this.btnAddBlock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddBlock.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnAddBlock.ForeColor = System.Drawing.Color.White;
+            this.btnAddBlock.Location = new System.Drawing.Point(20, 20);
             this.btnAddBlock.Name = "btnAddBlock";
             this.btnAddBlock.Size = new System.Drawing.Size(120, 35);
             this.btnAddBlock.TabIndex = 10;
             this.btnAddBlock.Text = "新增圖塊列";
-            this.btnAddBlock.UseVisualStyleBackColor = true;
+            this.btnAddBlock.UseVisualStyleBackColor = false;
             this.btnAddBlock.Click += new System.EventHandler(this.btnAddBlock_Click);
             // 
             // btnImportBlockMap
             // 
-            this.btnImportBlockMap.Location = new System.Drawing.Point(160, 520);
+            this.btnImportBlockMap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(193)))), ((int)(((byte)(7)))));
+            this.btnImportBlockMap.FlatAppearance.BorderSize = 0;
+            this.btnImportBlockMap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnImportBlockMap.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnImportBlockMap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.btnImportBlockMap.Location = new System.Drawing.Point(160, 20);
             this.btnImportBlockMap.Name = "btnImportBlockMap";
             this.btnImportBlockMap.Size = new System.Drawing.Size(120, 35);
             this.btnImportBlockMap.TabIndex = 11;
             this.btnImportBlockMap.Text = "匯入圖塊對應";
-            this.btnImportBlockMap.UseVisualStyleBackColor = true;
+            this.btnImportBlockMap.UseVisualStyleBackColor = false;
             this.btnImportBlockMap.Click += new System.EventHandler(this.btnImportBlockMap_Click);
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(320, 520);
+            this.btnOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
+            this.btnOK.FlatAppearance.BorderSize = 0;
+            this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOK.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnOK.ForeColor = System.Drawing.Color.White;
+            this.btnOK.Location = new System.Drawing.Point(380, 20);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(100, 35);
             this.btnOK.TabIndex = 5;
             this.btnOK.Text = "確定";
-            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.UseVisualStyleBackColor = false;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(460, 520);
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnCancel.ForeColor = System.Drawing.Color.White;
+            this.btnCancel.Location = new System.Drawing.Point(500, 20);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 35);
             this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "取消";
-            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // NameFormatForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 600);
-            this.Controls.Add(this.btnImportBlockMap);
-            this.Controls.Add(this.btnAddBlock);
-            this.Controls.Add(this.dgvBlocks);
-            this.Controls.Add(this.txtExcelName);
-            this.Controls.Add(this.lblExcelName);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.txtPreview);
-            this.Controls.Add(this.lblPreview);
-            this.Controls.Add(this.flowSegments);
-            this.Controls.Add(this.lblFileName);
-            this.Controls.Add(this.lblHint);
-            this.Controls.Add(this.chkShowLayer);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.ClientSize = new System.Drawing.Size(620, 620);
+            this.Controls.Add(this.pnlMain);
+            this.Controls.Add(this.pnlButtons);
+            this.Controls.Add(this.pnlHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -188,8 +271,12 @@ namespace AutoCAD_Block_Counter
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "檔案名稱格式設定";
             ((System.ComponentModel.ISupportInitialize)(this.dgvBlocks)).EndInit();
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlHeader.PerformLayout();
+            this.pnlMain.ResumeLayout(false);
+            this.pnlMain.PerformLayout();
+            this.pnlButtons.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
         }
 
         #endregion

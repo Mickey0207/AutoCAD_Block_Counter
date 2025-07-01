@@ -1,6 +1,7 @@
 using ClosedXML.Excel;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -20,13 +21,29 @@ namespace AutoCAD_Block_Counter
         public bool IsConfirmed { get; private set; } = false;
         public string ExcelFileName => txtExcelName.Text.Trim();
         public List<BlockMapping> BlockMappings { get; private set; } = new();
-        public bool ShowLayerInExcel => chkShowLayer.Checked;
 
         public NameFormatForm(string firstFileName)
         {
             InitializeComponent();
+            ApplyAdditionalStyling();
             ShowSegments(firstFileName);
             InitBlockGrid();
+        }
+
+        private void ApplyAdditionalStyling()
+        {
+            // 設定 DataGridView 樣式
+            dgvBlocks.EnableHeadersVisualStyles = false;
+            dgvBlocks.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 152, 219);
+            dgvBlocks.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvBlocks.ColumnHeadersDefaultCellStyle.Font = new Font("Microsoft JhengHei UI", 9.75F, FontStyle.Bold);
+            dgvBlocks.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(52, 152, 219);
+            dgvBlocks.DefaultCellStyle.SelectionBackColor = Color.FromArgb(173, 216, 230);
+            dgvBlocks.DefaultCellStyle.SelectionForeColor = Color.FromArgb(33, 37, 41);
+            dgvBlocks.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 249, 250);
+            
+            // 設定表單圖示（如果需要的話）
+            this.BackColor = Color.FromArgb(248, 249, 250);
         }
 
         private void ShowSegments(string fileName)
@@ -36,13 +53,18 @@ namespace AutoCAD_Block_Counter
             _segments = nameWithoutExt.Split('_');
             flowSegments.Controls.Clear();
             _checkBoxes.Clear();
+            
             for (int i = 0; i < _segments.Length; i++)
             {
                 var cb = new CheckBox
                 {
                     Text = $"第{i + 1}段：{_segments[i]}",
                     Tag = i,
-                    AutoSize = true
+                    AutoSize = true,
+                    Font = new Font("Microsoft JhengHei UI", 9.75F, FontStyle.Regular),
+                    ForeColor = Color.FromArgb(73, 80, 87),
+                    Margin = new Padding(5, 3, 15, 3),
+                    BackColor = Color.Transparent
                 };
                 cb.CheckedChanged += (s, e) => UpdatePreview();
                 flowSegments.Controls.Add(cb);
@@ -68,8 +90,8 @@ namespace AutoCAD_Block_Counter
             dgvBlocks.ColumnCount = 2;
             dgvBlocks.Columns[0].HeaderText = "原始圖塊名稱";
             dgvBlocks.Columns[1].HeaderText = "Excel顯示名稱";
-            dgvBlocks.Columns[0].Width = 140;
-            dgvBlocks.Columns[1].Width = 160;
+            dgvBlocks.Columns[0].Width = 200;
+            dgvBlocks.Columns[1].Width = 340;
         }
 
         private void btnAddBlock_Click(object sender, EventArgs e)
@@ -112,7 +134,7 @@ namespace AutoCAD_Block_Counter
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"匯入失敗: {ex.Message}");
+                        MessageBox.Show($"匯入失敗: {ex.Message}", "錯誤", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -138,12 +160,12 @@ namespace AutoCAD_Block_Counter
             DialogResult = IsConfirmed ? DialogResult.OK : DialogResult.None;
             if (IsConfirmed && BlockMappings.Count == 0)
             {
-                MessageBox.Show("請至少設定一個圖塊對應。", "提示");
+                MessageBox.Show("請至少設定一個圖塊對應。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 IsConfirmed = false;
                 DialogResult = DialogResult.None;
             }
             if (IsConfirmed) Close();
-            else if (!IsConfirmed) MessageBox.Show("請選擇至少一個分段並輸入Excel檔案名稱。", "提示");
+            else if (!IsConfirmed) MessageBox.Show("請選擇至少一個分段並輸入Excel檔案名稱。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

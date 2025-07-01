@@ -54,7 +54,6 @@ namespace AutoCAD_Block_Counter
             string excelFileName = string.Empty;
             bool isConfirmed = false;
             List<BlockMapping> blockMappings = new();
-            bool showLayer = false;
             using (var dialog = new NameFormatForm(firstFileName))
             {
                 if (dialog.ShowDialog() == DialogResult.OK && dialog.IsConfirmed)
@@ -62,7 +61,6 @@ namespace AutoCAD_Block_Counter
                     selectedIndexes = dialog.SelectedIndexes;
                     excelFileName = dialog.ExcelFileName;
                     blockMappings = dialog.BlockMappings;
-                    showLayer = dialog.ShowLayerInExcel;
                     isConfirmed = true;
                 }
             }
@@ -72,15 +70,13 @@ namespace AutoCAD_Block_Counter
                 return;
             }
 
-            // 統計所有檔案的圖塊數量與圖層
-            var allBlockNames = new HashSet<string>();
-            var allBlockLayers = new Dictionary<string, string>(); // blockName => layerName
-            var fileBlockCounts = new Dictionary<string, Dictionary<string, int>>();
-            var fileBlockLayers = new Dictionary<string, Dictionary<string, string>>(); // file => blockName => layerName
+            // 統計所有檔案的圖塊數量與圖層（按圖塊名稱+圖層組合統計）
+            var allBlockLayerCombos = new HashSet<string>(); // "BlockName@LayerName" 的組合
+            var fileBlockLayerCounts = new Dictionary<string, Dictionary<string, int>>(); // file => ("BlockName@LayerName" => count)
+            
             foreach (var file in dwgFiles)
             {
-                var blockCounts = new Dictionary<string, int>();
-                var blockLayers = new Dictionary<string, string>();
+                var blockLayerCounts = new Dictionary<string, int>();
                 try
                 {
                     using (var db = new Database(false, true))
@@ -97,15 +93,14 @@ namespace AutoCAD_Block_Counter
                                 {
                                     string name = blockRef.Name;
                                     string layer = blockRef.Layer;
-                                    if (blockCounts.ContainsKey(name))
-                                        blockCounts[name]++;
+                                    string blockLayerKey = $"{name}@{layer}"; // 用 @ 符號分隔圖塊名稱和圖層名稱
+                                    
+                                    if (blockLayerCounts.ContainsKey(blockLayerKey))
+                                        blockLayerCounts[blockLayerKey]++;
                                     else
-                                        blockCounts[name] = 1;
-                                    if (!blockLayers.ContainsKey(name))
-                                        blockLayers[name] = layer;
-                                    allBlockNames.Add(name);
-                                    if (!allBlockLayers.ContainsKey(name))
-                                        allBlockLayers[name] = layer;
+                                        blockLayerCounts[blockLayerKey] = 1;
+                                    
+                                    allBlockLayerCombos.Add(blockLayerKey);
                                 }
                             }
                             tr.Commit();
@@ -116,8 +111,7 @@ namespace AutoCAD_Block_Counter
                 {
                     ed.WriteMessage($"\n讀取檔案 {Path.GetFileName(file)} 時發生錯誤: {ex.Message}");
                 }
-                fileBlockCounts[Path.GetFileName(file)] = blockCounts;
-                fileBlockLayers[Path.GetFileName(file)] = blockLayers;
+                fileBlockLayerCounts[Path.GetFileName(file)] = blockLayerCounts;
             }
 
             // 匯出到Excel
@@ -131,28 +125,56 @@ namespace AutoCAD_Block_Counter
                     var ws = workbook.Worksheets.Add("BatchBlockCounts");
                     var blockList = blockMappings.Select(b => b.BlockName).ToList();
                     var blockDisplayList = blockMappings.Select(b => b.DisplayName).ToList();
-                    var fileList = fileBlockCounts.Keys.ToList();
-                    // 取得所有未定義的圖塊
-                    var undefinedBlocks = allBlockNames.Except(blockList).OrderBy(x => x).ToList();
-                    // 依圖層分組排序（已定義的在上，未定義的在下）
-                    var definedBlocks = blockList
-                        .Select((b, i) => new { Block = b, Display = blockDisplayList[i], Layer = allBlockLayers.ContainsKey(b) ? allBlockLayers[b] : "" })
-                        .OrderBy(x => x.Layer).ThenBy(x => x.Block).ToList();
-                    var undefinedBlockInfos = undefinedBlocks
-                        .Select(b => new { Block = b, Display = "", Layer = allBlockLayers.ContainsKey(b) ? allBlockLayers[b] : "" })
-                        .OrderBy(x => x.Layer).ThenBy(x => x.Block).ToList();
+                    var fileList = fileBlockLayerCounts.Keys.ToList();
+                    
+                    // 分離已定義和未定義的圖塊+圖層組合
+                    var definedBlockLayerCombos = new List<(string BlockName, string DisplayName, string Layer, string Key)>();
+                    var undefinedBlockLayerCombos = new List<(string BlockName, string Layer, string Key)>();
+                    
+                    foreach (var combo in allBlockLayerCombos.OrderBy(x => x))
+                    {
+                        var parts = combo.Split('@');
+                        if (parts.Length == 2)
+                        {
+                            string blockName = parts[0];
+                            string layerName = parts[1];
+                            
+                            var mapping = blockMappings.FirstOrDefault(m => m.BlockName == blockName);
+                            if (mapping != null)
+                            {
+                                definedBlockLayerCombos.Add((blockName, mapping.DisplayName, layerName, combo));
+                            }
+                            else
+                            {
+                                undefinedBlockLayerCombos.Add((blockName, layerName, combo));
+                            }
+                        }
+                    }
+                    
+                    // 按圖層分組排序
+                    definedBlockLayerCombos = definedBlockLayerCombos
+                        .OrderBy(x => x.Layer)
+                        .ThenBy(x => x.BlockName)
+                        .ToList();
+                    undefinedBlockLayerCombos = undefinedBlockLayerCombos
+                        .OrderBy(x => x.Layer)
+                        .ThenBy(x => x.BlockName)
+                        .ToList();
+                    
                     // 圖層顏色分配
-                    var allLayers = definedBlocks.Concat(undefinedBlockInfos).Select(x => x.Layer).Distinct().ToList();
+                    var allLayers = definedBlockLayerCombos.Select(x => x.Layer)
+                        .Concat(undefinedBlockLayerCombos.Select(x => x.Layer))
+                        .Distinct().ToList();
                     var layerColorMap = new Dictionary<string, XLColor>();
                     var palette = new[] { XLColor.LightBlue, XLColor.LightGreen, XLColor.LightYellow, XLColor.LightPink, XLColor.LightGray, XLColor.LightCyan, XLColor.LightSalmon, XLColor.LightCoral };
                     for (int i = 0; i < allLayers.Count; i++)
                         layerColorMap[allLayers[i]] = palette[i % palette.Length];
+                    
                     // 標題列
                     ws.Cell(1, 1).Value = "原始圖塊";
                     ws.Cell(1, 2).Value = "新圖塊名稱";
-                    int colLayer = showLayer ? 3 : -1;
-                    if (showLayer) ws.Cell(1, 3).Value = "圖層名稱";
-                    int colStart = showLayer ? 4 : 3;
+                    ws.Cell(1, 3).Value = "圖層名稱";
+                    int colStart = 4;
                     for (int i = 0; i < fileList.Count; i++)
                     {
                         string shortName = ExtractShortName(fileList[i]);
@@ -164,45 +186,54 @@ namespace AutoCAD_Block_Counter
                     // 加總欄位
                     int sumCol = fileList.Count + colStart;
                     ws.Cell(1, sumCol).Value = "各樓層加總統計";
+                    
                     // 已定義圖塊
                     int row = 2;
-                    foreach (var info in definedBlocks)
+                    foreach (var info in definedBlockLayerCombos)
                     {
-                        ws.Cell(row, 1).Value = info.Block;
-                        ws.Cell(row, 2).Value = info.Display;
-                        if (showLayer) ws.Cell(row, 3).Value = info.Layer;
-                        if (showLayer && !string.IsNullOrEmpty(info.Layer))
+                        ws.Cell(row, 1).Value = info.BlockName;
+                        ws.Cell(row, 2).Value = info.DisplayName;
+                        ws.Cell(row, 3).Value = info.Layer;
+                        
+                        // 設定圖層背景色
+                        if (!string.IsNullOrEmpty(info.Layer) && layerColorMap.ContainsKey(info.Layer))
                             ws.Range(row, 1, row, sumCol).Style.Fill.BackgroundColor = layerColorMap[info.Layer];
+                        
                         int sum = 0;
                         for (int c = 0; c < fileList.Count; c++)
                         {
-                            var blockCounts = fileBlockCounts[fileList[c]];
-                            blockCounts.TryGetValue(info.Block, out int count);
+                            var blockLayerCounts = fileBlockLayerCounts[fileList[c]];
+                            blockLayerCounts.TryGetValue(info.Key, out int count);
                             ws.Cell(row, c + colStart).Value = count;
                             sum += count;
                         }
                         ws.Cell(row, sumCol).Value = sum;
                         row++;
                     }
+                    
                     // 未定義圖塊
-                    foreach (var info in undefinedBlockInfos)
+                    foreach (var info in undefinedBlockLayerCombos)
                     {
-                        ws.Cell(row, 1).Value = info.Block;
-                        ws.Cell(row, 2).Value = info.Display;
-                        if (showLayer) ws.Cell(row, 3).Value = info.Layer;
-                        if (showLayer && !string.IsNullOrEmpty(info.Layer))
+                        ws.Cell(row, 1).Value = info.BlockName;
+                        ws.Cell(row, 2).Value = ""; // 未定義顯示名稱
+                        ws.Cell(row, 3).Value = info.Layer;
+                        
+                        // 設定圖層背景色
+                        if (!string.IsNullOrEmpty(info.Layer) && layerColorMap.ContainsKey(info.Layer))
                             ws.Range(row, 1, row, sumCol).Style.Fill.BackgroundColor = layerColorMap[info.Layer];
+                        
                         int sum = 0;
                         for (int c = 0; c < fileList.Count; c++)
                         {
-                            var blockCounts = fileBlockCounts[fileList[c]];
-                            blockCounts.TryGetValue(info.Block, out int count);
+                            var blockLayerCounts = fileBlockLayerCounts[fileList[c]];
+                            blockLayerCounts.TryGetValue(info.Key, out int count);
                             ws.Cell(row, c + colStart).Value = count;
                             sum += count;
                         }
                         ws.Cell(row, sumCol).Value = sum;
                         row++;
                     }
+                    
                     workbook.SaveAs(filePath);
                 }
                 ed.WriteMessage($"\n已將批次圖塊計數結果匯出至: {filePath}");
